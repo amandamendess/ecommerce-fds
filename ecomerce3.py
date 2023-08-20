@@ -57,7 +57,7 @@ class Anuncio(db.Model):
         self.usu_id = usu_id
 
 @app.errorhandler(404)
-def paginanaoencontrada(error):
+def paginanaoencontrada(error):  
     return render_template('pagina_nao_encontrada.html')
 
 @app.route("/")

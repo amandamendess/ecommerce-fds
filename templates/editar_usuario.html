@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head> 
+    <title>Nome Ecomerce {{titulo}}</title>
+</head>
+
+<body>
+    <h4>Edicao de {{titulo}}</h4>
+    <form action="/usuario/editar/{{ usuario.id }}" method="post">
+        <p><label for="user"> Nome Completo</label> </p>
+        <p><input type="text" id="user" name="user" value="{{usuario.nome}}"></p>
+
+        <p><label for="telefone"> Telefone</label> </p>
+        <p><input type="text" id="telefone" name="telefone" value="{{usuario.telefone}}"></p>
+
+        <p><label for="email"> Email</label> </p>
+        <p><input type="text" id="email" name="email" value="{{usuario.email}}"></p>
+
+        <p><label for="senha"> Senha</label> </p>
+        <p><input type="text" id="senha" name="senha" value="{{usuario.senha}}"></p>
+
+        <p><label for="cpf"> CPF</label> </p>
+        <p><input type="text" id="cpf" name="cpf" value="{{usuario.cpf}}"></p>
+
+        <p><input type="submit" value="Alterar" ></p>
+    </form>
+    <a href={{url_for("usuario")}}> Cancelar</a>
+</body>
+
+</html>

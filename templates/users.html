@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <heade>
+        <title>Nome do Ecomerce - {{username}}</title>
+    </heade>
+    <body>
+        <h4>{{titulo}}</h4>
+        <!-- <form action="/cadastrar/usuario" method="post"> -->
+        <form action="/usuario/criar" method="post">
+            <p><label for="user"> Nome Completo</label> </p>
+            <p><input type="text" id="user" name="user"></p>
+
+            <p><label for="telefone"> Telefone</label> </p>
+            <p><input type="text" id="telefone" name="telefone"></p>
+
+            <p><label for="email"> Email</label> </p>
+            <p><input type="text" id="email" name="email"></p>
+
+            <p><label for="senha"> Senha</label> </p>
+            <p><input type="text" id="senha" name="senha"></p>
+
+            <p><label for="cpf"> CPF</label> </p>
+            <p><input type="text" id="cpf" name="cpf"></p>
+
+            <p><input type="submit" value="Cadastrar"></p>
+
+        </form>
+
+        <h4>Lista de {{titulo}}</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Senha</th>
+                <th>CPF</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.telefone }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.senha }}</td>
+                    <td>{{ usuario.cpf }}</td>
+                    <td>
+                        <a href={{url_for('editarusuario', id=usuario.id)}}>Editar</a>
+                        <a href={{url_for('deletarusuario', id=usuario.id)}}>Deletar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </body>
+</html>

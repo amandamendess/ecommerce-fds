@@ -5,14 +5,24 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import redirect
 from flask import url_for
 from flask import request
+from flask_login import (current_user, LoginManager,
+                             login_user, logout_user,
+                             login_required)
+import hashlib
 import pymysql 
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ecomerce:Margarida0#@localhost:3306/ecomerce'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ecomerce:Margarida0#@localhost:3306/ecomerce'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://amandamendes:Margarida0#@amandamendes.mysql.pythonanywhere-services.com:3306/amandamendes$ecomerce'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+app.secret_key = 'chaveecomerce'
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 class Usuario(db.Model):
     __tablename__ = "usuario"
@@ -22,13 +32,28 @@ class Usuario(db.Model):
     cpf = db.Column('usu_cpf', db.Integer)
     senha = db.Column('usu_senha', db.String(256))
     email = db.Column('usu_email', db.String(256))
+    login = db.Column('usu_login', db.String(256))
 
-    def __init__(self, nome, telefone,cpf, senha, email):
+    def __init__(self, nome, telefone,cpf, senha, email, login):
         self.nome = nome
         self.telefone = telefone
         self.cpf = cpf
         self.senha = senha
         self.email = email
+        self.login = login
+
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
 
 class Categoria(db.Model):
     __tablename__ = "categoria"
@@ -60,17 +85,44 @@ class Anuncio(db.Model):
 def paginanaoencontrada(error):  
     return render_template('pagina_nao_encontrada.html')
 
+@login_manager.user_loader
+def load_user(id):
+    return Usuario.query.get(id)
+
 @app.route("/")
 def index():
     return render_template('index.html')
 
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        login = request.form.get('login')
+        senha = hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest()
+
+
+        user = Usuario.query.filter_by(login=login, senha=senha).first()
+
+        if user:
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('login'))
+    return render_template('login.html')
+            
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 @app.route("/cadastrar/usuario")
+@login_required
 def usuario():
       return render_template('users.html', usuarios = Usuario.query.all(), titulo="Usuario")
 
 @app.route("/usuario/criar", methods=['POST'])
 def criarusuario():  
-    usuario = Usuario(request.form.get('user'), request.form.get('telefone'), request.form.get('cpf'), request.form.get('senha'), request.form.get('email'))  
+    hash = hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest()
+    usuario = Usuario(request.form.get('user'), request.form.get('telefone'), request.form.get('cpf'),hash , request.form.get('email'))  
     db.session.add(usuario)
     db.session.commit()
     return redirect(url_for('usuario'))
@@ -81,14 +133,16 @@ def buscarusuario(id):
     return usuario.nome
 
 @app.route("/usuario/editar/<int:id>",  methods=['GET', 'POST'])
+@login_required
 def editarusuario(id):
     usuario = Usuario.query.get(id)
     if request.method == 'POST':
         usuario.nome = request.form.get('user')
         usuario.telefone = request.form.get('telefone'), 
         usuario.cpf = request.form.get('cpf'), 
-        usuario.senha = request.form.get('senha'), 
+        usuario.senha =  hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest(),
         usuario.email = request.form.get('email')
+        usuario.login = request.form.get('login')
         db.session.add(usuario)
         db.session.commit()
         return redirect(url_for('usuario'))
@@ -96,6 +150,7 @@ def editarusuario(id):
     return render_template('editar_usuario.html', usuario = usuario, titulo='Usuario')
 
 @app.route("/usuario/deletar/<int:id>")
+@login_required
 def deletarusuario(id):
     usuario = Usuario.query.get(id)
     db.session.delete(usuario)
@@ -142,3 +197,5 @@ with app.app_context():
     if __name__ == 'ecomerce3':
         print('ecomerce3')
     db.create_all()
+    #quando testar somente na web comentar a linha de baixo
+    app.run()

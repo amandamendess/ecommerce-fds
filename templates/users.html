@@ -49,9 +49,7 @@
                         </form>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
         <h4>Lista de {{titulo}}</h4>
@@ -62,6 +60,7 @@
                 <th>Telefone</th>
                 <th>E-mail</th>
                 <th>Senha</th>
+                <th>Login</th>            
                 <th>CPF</th>
                 <th>Ações</th>
             </tr>
@@ -73,6 +72,7 @@
                     <td>{{ usuario.telefone }}</td>
                     <td>{{ usuario.email }}</td>
                     <td>{{ usuario.senha }}</td>
+                    <td>{{ usuario.login }}</td>
                     <td>{{ usuario.cpf }}</td>
                     <td>
                         <a href={{url_for('editarusuario', id=usuario.id)}}>Editar</a>

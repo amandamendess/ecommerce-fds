@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <heade>
+        <title>Nome do Ecomerce - {{username}}</title>
+        <link rel="stylesheet" href="../static/css/bootstrap.css">
+    </heade>
+    <body>
+        <h4>{{titulo}}</h4>
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <form action="/anuncio/criar" method="post">
+                            <div class="form-group">
+                               <label for="user"> Nome </label> 
+                               <input type="text" id="user" name="user" class="form-control">
+                            </div>
+                
+                            <div class="form-group">
+                                <label for="desc"> Descrição</label>
+                                <input type="text" id="desc" name="desc"  class="form-control">
+                            </div>
+                
+                            <div class="form-group">
+                                <label for="qnt"> Quantidade</label>
+                                <input type="text" id="qnt" name="qnt"  class="form-control">
+                            </div>
+                
+                            <div class="form-group">
+                                <label for="preco"> Preço</label>
+                                <input type="text" id="preco" name="preco"  class="form-control">
+                            </div>
+                            
+                            <button type="button" class="btn btn-success">Cadastrar</button>
+                            <button type="reset" class="btn btn-primary">Limpar</button>
+               
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <h4>Lista de {{titulo}}</h4>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thread-default">
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for anuncio in anuncios %}
+                <tr>
+                    <td>{{anuncio.nome }}</td>
+                    <td>{{anuncio.desc }}</td>
+                    <td>{{anuncio.qtd }}</td>
+                    <td>{{anuncio.preco }}</td>
+                    <td>
+                        <a>Editar</a>
+                        <a>Deletar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </body>
+</html>

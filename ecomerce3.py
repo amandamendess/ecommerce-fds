@@ -13,8 +13,8 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ecomerce:Margarida0#@localhost:3306/ecomerce'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://amandamendes:Margarida0#@amandamendes.mysql.pythonanywhere-services.com:3306/amandamendes$ecomerce'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ecomerce:Margarida0#@localhost:3306/ecomerce'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://amandamendes:Margarida0#@amandamendes.mysql.pythonanywhere-services.com:3306/amandamendes$ecomerce'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -63,6 +63,12 @@ class Categoria(db.Model):
     def __init__ (self, nome):
         self.nome = nome
 
+class Pergunta(db.Model):
+    __table_name = "pergunta"
+    id = db.Column('perg_id', db.Integer, primary_key=True)
+    desc = db.Column('perg_desc', db.String(256))
+    anu_id = db.Column('anu_id', db.Integer, db.ForeignKey('anuncio.anu_id'))
+
 class Anuncio(db.Model):
     __tablename__ = "anuncio"
     id = db.Column('anu_id', db.Integer, primary_key=True)
@@ -99,7 +105,6 @@ def login():
         login = request.form.get('login')
         senha = hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest()
 
-
         user = Usuario.query.filter_by(login=login, senha=senha).first()
 
         if user:
@@ -115,7 +120,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route("/cadastrar/usuario")
-@login_required
+# @login_required
 def usuario():
       return render_template('users.html', usuarios = Usuario.query.all(), titulo="Usuario")
 
@@ -150,7 +155,7 @@ def editarusuario(id):
     return render_template('editar_usuario.html', usuario = usuario, titulo='Usuario')
 
 @app.route("/usuario/deletar/<int:id>")
-@login_required
+# @login_required
 def deletarusuario(id):
     usuario = Usuario.query.get(id)
     db.session.delete(usuario)
@@ -168,22 +173,55 @@ def novacategoria():
     db.session.commit()
     return redirect(url_for('categoria'))
 
+@app.route("/categoria/editar/<int:id>",  methods=['GET', 'POST'])
+def categoriaeditar(id):
+    categoria = Categoria.query.get(id)
+    if request.method == 'POST':
+        categoria.nome = request.form.get('nome')
+        db.session.add(categoria)
+        db.session.commit()
+        return redirect(url_for('categoria'))
+    
+    return render_template('editar_categoria.html', categoria = categoria, titulo='Categoria')
+
+
 @app.route("/cadastrar/anuncio")
-def cadastrar_anuncio():
-    return render_template('anuncio.html')
+def anuncio():
+    return render_template('anuncio.html', anuncios = Anuncio.query.all())
+
+@app.route("/anuncio/criar", methods=['POST'])
+def cadastrar_anuncio(): 
+    anuncio = Anuncio(request.form.get('nome'), request.form.get('desc'), request.form.get('qnt'), request.form.get('preco'), request.form.get('cat'), request.form.get('usu'))
+    db.session.add(anuncio)
+    db.session.commit()
+    return redirect(url_for('anuncio'))
+
+# @app.route("/anuncio/editar/<int:id>",  methods=['GET', 'POST'])
+# def editaranuncio(id):
+#     anuncio = Anuncio.query.get(id)
+#     if request.method == 'POST':
+#         anuncio.nome = request.form.get('nome')
+#         anuncio.desc = request.form.get('desc')
+#         anuncio.qnt = request.form.get('qnt')
+#         anuncio.preco = request.form.get('preco')
+#         db.session.add(anuncio)
+#         db.session.commit()
+#         return redirect(url_for('anuncio'))
+    
+#     return render_template('editar_anuncio.html', anuncio=anuncio)
 
 @app.route('/anuncio/perguntas')
 def pergunta():
     return render_template('pergunta.html')
 
 
-@app.route("/relatorio/compra")
+@app.route("/compra")
 def compra():
-    return ''
+    return render_template('relat_compra.html')
 
 @app.route("/relatorio/venda")
 def venda():
-    return 'l'
+    return render_template('relat_venda.html')
 
 @app.route("/login")
 def entrar():
@@ -198,4 +236,4 @@ with app.app_context():
         print('ecomerce3')
     db.create_all()
     #quando testar somente na web comentar a linha de baixo
-    app.run()
+    # app.run()

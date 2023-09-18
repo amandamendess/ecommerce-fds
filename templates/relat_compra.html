@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <heade>
+        <title>Nome do Ecomerce - {{username}}</title>
+        <link rel="stylesheet" href="../static/css/bootstrap.css">
+    </heade>
+    <body>
+
+        <h4>Lista de Compras</h4>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thread-default">
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for anuncio in anuncios %}
+                <tr>
+                    <td>{{ anuncio.nome }}</td>
+                    <td>{{ anuncio.desc }}</td>
+                    <td>{{ anuncio.qnt }}</td>
+                    <td>{{ anuncio.preco }}</td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </body>
+</html>

@@ -2,16 +2,86 @@
 <html>
     <heade>
         <title>Nome do Ecomerce</title>
+        <link rel="stylesheet" href="../static/css/bootstrap.css">
     </heade> 
     <body>
        <h4> Bem vindo ao Nome do Ecomerce</h4>
-       <p><a href={{ url_for("compra") }}> Minhas Compras</a></p>
-       <p><a href={{ url_for("venda") }}>Minhas Vendas</a></p>
-       <p><a href={{ url_for("categoria") }}>Categorias</a></p>
-       <p><a href={{ url_for("cadastrar_anuncio") }}> + Anúncio</a></p>
-       <p><a href={{ url_for("usuario") }}>Cadastrar</a></p>
-       <p><a href={{ url_for("entrar") }}>Entrar</a></p>
+       
+       <div class="row">
+           <div col-sm-12>
 
-       <p><a href={{ url_for("logout") }}> Logout</a></p>
+                <div class="row " >
+                    <div class="col-sm-2 btn btn-default">
+                        <a href={{ url_for("compra") }}> Minhas Compras</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href={{ url_for("venda") }}>Minhas Vendas</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href={{ url_for("categoria") }}>Categorias</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href={{ url_for("anuncio") }}> + Anúncio</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href={{ url_for("usuario") }}>Cadastrar</a>
+                    </div>
+                    <div class="col-sm-1">
+                        <a href={{ url_for("entrar") }}>Entrar</a>
+                    </div>
+                    <div class="col-sm-1">
+                        <a href={{ url_for("logout") }}> Logout</a>
+                    </div>
+                </div>
+<br/><br/>
+                <div class="row">               
+                    <div class="col-sm-3">
+                        <img src="../assets/image/bike.jpg" alt="" width="200" height="200">   <br/> 
+                        <button type="button" class="btn btn-primary">Comprar</button>                 
+                    </div>
+
+                    <div class="col-sm-3">
+                        <img src="../assets/image/ler.jpg" alt="" width="200" height="200"><br/>
+                        <button type="button" class="btn btn-primary">Comprar</button>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <img src="../assets/image/bike.jpg" alt="" width="200" height="200"><br/>
+                        <button type="button" class="btn btn-primary">Comprar</button>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <img src="../assets/image/bike.jpg" alt="" width="200" height="200"><br/>
+                        <button type="button" class="btn btn-primary">Comprar</button>
+                    </div>
+                </div>
+
+<br/><br/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img src="../assets/image/bike.jpg" alt="" width="200" height="200">   <br/> 
+                        <button type="button" class="btn btn-primary">Comprar</button>                 
+                    </div>
+
+                    <div class="col-sm-3">
+                        <img src="../assets/image/ler.jpg" alt="" width="200" height="200"><br/>
+                        <button type="button" class="btn btn-primary">Comprar</button>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <img src="../assets/image/bike.jpg" alt="" width="200" height="200"><br/>
+                        <button type="button" class="btn btn-primary">Comprar</button>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <img src="../assets/image/bike.jpg" alt="" width="200" height="200"><br/>
+                        <button type="button" class="btn btn-primary">Comprar</button>
+                    </div>
+                </div>
+            </div>
+           </div>
+       </div>
+
+     
     </body>
 </html>

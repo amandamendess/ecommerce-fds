@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head> 
+    <title>Nome Ecomerce {{titulo}}</title>
+</head>
+
+<body>
+    <h4>Edição de {{titulo}}</h4>
+    <form action="/categoria/editar/{{ categoria.id }}" method="post">
+        <p><label for="nome"> Nome Completo</label> </p>
+        <p><input type="text" id="nome" name="nome" value="{{categoria.nome}}"></p>
+
+
+        <p><input type="submit" value="Alterar" ></p>
+    </form>
+    <a href={{url_for("categoria")}}> Cancelar</a>
+</body>
+
+</html>
